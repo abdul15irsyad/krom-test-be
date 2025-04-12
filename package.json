@@ -1,0 +1,39 @@
+{
+  "name": "krom-test-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "drizzle-kit": "npx drizzle-kit --config src/database/drizzle.config.ts",
+    "migrate": "npm run drizzle-kit migrate",
+    "seed": "npx ts-node src/database/seeds/index.ts",
+    "dev": "npx nodemon src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "https://github.com/abdul15irsyad",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.30.6",
+    "drizzle-orm": "^0.41.0",
+    "drizzle-seed": "^0.3.1",
+    "express": "^5.0.1",
+    "mysql2": "^3.14.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@faker-js/faker": "^9.6.0",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.29.1"
+  }
+}
