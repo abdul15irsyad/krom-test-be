@@ -33,7 +33,7 @@ export const applicantSeed = async (db: Database) => {
     });
     newApplicants.push({
       name: fullname,
-      email: email,
+      email: email.toLowerCase(),
       phoneNumber: faker.phone.number({ style: 'international' }),
       yearsOfExperience: faker.number.int({ min: 1, max: 12 }),
       appliedRoleId: faker.helpers.arrayElement(applicationRoles).id,

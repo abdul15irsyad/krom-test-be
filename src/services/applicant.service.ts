@@ -1,4 +1,4 @@
-import { and, desc, count, eq, sql } from 'drizzle-orm';
+import { and, desc, count, eq, sql, or, like } from 'drizzle-orm';
 import { db } from '../database';
 import { applicants, roles, status } from '../database/schema';
 
@@ -46,15 +46,25 @@ export const createApplicant = async ({
 export const getAllApplicantsPagination = async ({
   page,
   limit,
+  search,
   appliedRoleId,
   statusId,
 }: {
   page: number;
   limit: number;
+  search?: string;
   appliedRoleId?: string;
   statusId?: string;
 }) => {
   const filter = [];
+  if (search) {
+    filter.push(
+      or(
+        like(applicants.name, `%${search}%`),
+        like(applicants.email, `%${search}%`),
+      ),
+    );
+  }
   if (appliedRoleId) {
     filter.push(eq(applicants.appliedRoleId, appliedRoleId));
   }

@@ -28,6 +28,7 @@ export const getAllApplicantHandler = async (req: Request, res: Response) => {
   const { countAll, data } = await getAllApplicantsPagination({
     page: req.query.page ? +req.query.page : 1,
     limit: req.query.limit ? +req.query.limit : 10,
+    search: req.query.search?.toString(),
     appliedRoleId: req.query.appliedRoleId?.toString(),
     statusId: req.query.statusId?.toString(),
   });
