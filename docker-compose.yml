@@ -1,0 +1,55 @@
+name: krom-test-be
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: krom-test-be-app
+    container_name: krom-test-be-app
+    ports:
+      - '6001:6001'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-mysql:3306/krom-test
+    depends_on:
+      mysql:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - krom-test-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: krom-test-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: P@55w0rd
+      MYSQL_DATABASE: krom-test
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    ports:
+      - ':3306'
+    networks:
+      - krom-test-network
+
+  migrations:
+    command: sh -c "npm run migrate-production && npm run seed-production"
+    image: krom-test-be-app
+    container_name: krom-test-migrate-and-seed
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-mysql:3306/krom-test
+    networks:
+      - krom-test-network
+    restart: 'no'
+
+networks:
+  krom-test-network:
+    driver: bridge
