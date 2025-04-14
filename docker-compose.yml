@@ -2,20 +2,20 @@ name: krom-test-be
 
 services:
   app:
+    container_name: krom-test-be-app
     build:
       context: .
       dockerfile: Dockerfile
-    image: krom-test-be-app
-    container_name: krom-test-be-app
+    image: krom-test-be
     ports:
       - '6001:6001'
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-mysql:3306/krom-test
+      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-be-mysql:3306/krom-test
     depends_on:
       mysql:
         condition: service_healthy
-      migrations:
+      migration-and-seed:
         condition: service_completed_successfully
     restart: unless-stopped
     networks:
@@ -23,7 +23,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: krom-test-mysql
+    container_name: krom-test-be-mysql
     environment:
       MYSQL_ROOT_PASSWORD: P@55w0rd
       MYSQL_DATABASE: krom-test
@@ -37,15 +37,15 @@ services:
     networks:
       - krom-test-network
 
-  migrations:
+  migration-and-seed:
     command: sh -c "npm run migrate-production && npm run seed-production"
-    image: krom-test-be-app
-    container_name: krom-test-migrate-and-seed
+    image: krom-test-be
+    container_name: krom-test-be-migrate-and-seed
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-mysql:3306/krom-test
+      - DATABASE_URL=mysql://root:P@55w0rd@krom-test-be-mysql:3306/krom-test
     networks:
       - krom-test-network
     restart: 'no'
