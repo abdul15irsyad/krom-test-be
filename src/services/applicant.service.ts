@@ -119,6 +119,16 @@ export const getApplicant = async (id: string) => {
   );
 };
 
+export const getApplicantByEmail = async (email: string) => {
+  const [data] = await db
+    .select()
+    .from(applicants)
+    .where(eq(applicants.email, email))
+    .execute();
+
+  return data;
+};
+
 export const updateApplicant = async (
   id: string,
   {

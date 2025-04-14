@@ -4,16 +4,31 @@ import {
   deleteApplicant,
   getAllApplicantsPagination,
   getApplicant,
+  getApplicantByEmail,
   updateApplicant,
 } from '../services/applicant.service';
 import { validationResult } from 'express-validator/';
 
 export const createApplicantHandler = async (req: Request, res: Response) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  const validationErrors = errors.array({ onlyFirstError: true });
+  if (!errors.mapped().email) {
+    const email = req.body.email;
+    const applicantExist = await getApplicantByEmail(email);
+    if (applicantExist) {
+      validationErrors.push({
+        type: 'field',
+        value: email,
+        msg: 'email already exist',
+        path: 'email',
+        location: 'body',
+      });
+    }
+  }
+  if (validationErrors.length > 0) {
     res.status(400).json({
       message: 'validation error',
-      errors: errors.array({ onlyFirstError: true }),
+      errors: validationErrors,
     });
     return;
   }

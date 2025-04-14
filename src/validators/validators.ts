@@ -16,32 +16,45 @@ export const validators = {
     .withMessage('search must be a string'),
 
   // common object
-  id: param('id').exists().withMessage('id is required'),
-  name: body('name').exists().withMessage('name is required'),
+  id: param('id').exists({ values: 'falsy' }).withMessage('id is required'),
+  name: body('name')
+    .exists({ values: 'falsy' })
+    .withMessage('name is required'),
   email: body('email')
-    .exists()
+    .exists({ values: 'falsy' })
     .withMessage('email is required')
     .isEmail()
-    .withMessage('email not valid'),
+    .withMessage('email is not valid email'),
 
   // applicant
-  location: body('location').exists().withMessage('location is required'),
+  location: body('location')
+    .exists({ values: 'falsy' })
+    .withMessage('location is required'),
+  phoneNumber: body('phoneNumber')
+    .exists({ values: 'falsy' })
+    .withMessage('phone number is required'),
   resumeURL: body('resumeURL')
-    .exists()
-    .withMessage('resumeURL is required')
+    .exists({ values: 'falsy' })
+    .withMessage('resume url is required')
     .isURL()
-    .withMessage('resume URL is not valid URL'),
+    .withMessage('resume url is not valid url'),
   appliedRoleId: body('appliedRoleId')
-    .exists()
-    .withMessage('applied role is required'),
+    .exists({ values: 'falsy' })
+    .withMessage('applied role is required')
+    .isUUID()
+    .withMessage('appliedRoleId must be a valid uuid'),
   applicationStatusId: body('applicationStatusId')
-    .exists()
-    .withMessage('application status is required'),
+    .exists({ values: 'falsy' })
+    .withMessage('application status is required')
+    .isUUID()
+    .withMessage('appliedRoleId must be a valid uuid'),
   yearsOfExperience: body('yearsOfExperience')
     .exists()
     .withMessage('years of experience is required')
-    .isInt()
-    .withMessage('years of experience must be an integer'),
+    .isInt({ min: 0 })
+    .withMessage(
+      'years of experience must be an integer and greater than or equal to 0',
+    ),
   filterAppliedRoleId: query('appliedRoleId')
     .optional()
     .isString()

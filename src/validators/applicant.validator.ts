@@ -4,6 +4,7 @@ export const createApplicantValidator = [
   validators.name,
   validators.email,
   validators.location,
+  validators.phoneNumber,
   validators.resumeURL,
   validators.appliedRoleId,
   validators.yearsOfExperience,
