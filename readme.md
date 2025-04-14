@@ -12,18 +12,24 @@ Irsyad Abdul Hamid Darussalam
 1. install dependencies
 
    ```bash
-   npm install
+   npm ci
    ```
 
 2. copy `.env.example` to `.env`
 3. set configuration (node env, database url, port)
-4. running migration and seeder
+4. create database named `krom-test` (or other based on `.env` file)
+
+   ```sql
+   CREATE DATABASE `krom-test`;
+   ```
+
+5. running migration and seeder
 
    ```bash
    npm run migrate && npm run seed
    ```
 
-5. run the application
+6. run the application
 
    ```bash
    npm run build && npm run start-production
