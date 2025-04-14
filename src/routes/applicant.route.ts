@@ -6,11 +6,22 @@ import {
   getApplicantHandler,
   updateApplicantHandler,
 } from '../handlers/applicant.handler';
+import {
+  createApplicantValidator,
+  deleteApplicantValidator,
+  getAllApplicantValidator,
+  getApplicantValidator,
+  updateApplicantValidator,
+} from '../validators/applicant.validator';
 
 export const applicantsRouter = express.Router();
 
-applicantsRouter.post('/', createApplicantHandler);
-applicantsRouter.get('/', getAllApplicantHandler);
-applicantsRouter.get('/:id', getApplicantHandler);
-applicantsRouter.put('/:id', updateApplicantHandler);
-applicantsRouter.delete('/:id', deleteApplicantHandler);
+applicantsRouter.post('/', createApplicantValidator, createApplicantHandler);
+applicantsRouter.get('/', getAllApplicantValidator, getAllApplicantHandler);
+applicantsRouter.get('/:id', getApplicantValidator, getApplicantHandler);
+applicantsRouter.put('/:id', updateApplicantValidator, updateApplicantHandler);
+applicantsRouter.delete(
+  '/:id',
+  deleteApplicantValidator,
+  deleteApplicantHandler,
+);

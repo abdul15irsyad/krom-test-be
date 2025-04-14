@@ -6,8 +6,18 @@ import {
   getApplicant,
   updateApplicant,
 } from '../services/applicant.service';
+import { validationResult } from 'express-validator/';
 
 export const createApplicantHandler = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      message: 'validation error',
+      errors: errors.array({ onlyFirstError: true }),
+    });
+    return;
+  }
+
   const newApplicant = await createApplicant({
     name: req.body.name,
     email: req.body.email,
@@ -25,6 +35,15 @@ export const createApplicantHandler = async (req: Request, res: Response) => {
 };
 
 export const getAllApplicantHandler = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      message: 'validation error',
+      errors: errors.array({ onlyFirstError: true }),
+    });
+    return;
+  }
+
   const { countAll, data } = await getAllApplicantsPagination({
     page: req.query.page ? +req.query.page : 1,
     limit: req.query.limit ? +req.query.limit : 10,
